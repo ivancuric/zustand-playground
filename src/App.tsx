@@ -1,7 +1,7 @@
 import { State } from "zustand";
 // default export, ime je nebitno
 import createVanilla from "zustand/vanilla";
-import create from "zustand";
+import createHook from "zustand";
 
 interface AppState extends State {
   count: number;
@@ -16,7 +16,7 @@ const vanillaStore = createVanilla<AppState>((set) => ({
 }));
 
 // naknadno stvorimo hook
-const useStore = create(vanillaStore);
+const useStore = createHook(vanillaStore);
 
 export const App = () => {
   return (
