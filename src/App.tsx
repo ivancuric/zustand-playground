@@ -2,6 +2,9 @@ import create from "zustand";
 import { combine } from "zustand/middleware";
 
 const useStore = create(
+  /**
+   * Combine adds inferring
+   */
   combine({ count: 0 }, (set) => ({
     add: (number: number) => set((state) => ({ count: state.count + number })),
     reset: () => set({ count: 0 }),
