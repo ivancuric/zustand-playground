@@ -34,11 +34,12 @@ const Counter = () => {
 };
 
 const Controls = () => {
-  const { add } = useStore();
+  const { add, reset } = useStore();
 
   return (
     <div>
       <button onClick={() => add(1)}>Add 1</button>
+      <button onClick={() => reset()}>Reset</button>
     </div>
   );
 };
