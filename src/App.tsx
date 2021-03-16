@@ -8,7 +8,7 @@ const useStore = create<AppState>(() => ({
   count: 0,
 }));
 
-// extractane "akcije"
+// extracted "actions"
 function add(number: number) {
   useStore.setState((state) => ({ count: state.count + number }));
 }
