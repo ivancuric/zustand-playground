@@ -21,7 +21,6 @@ function reset() {
   return { count: 0 };
 }
 
-// Možemo doći do set i get metoda izvan hooka
 const state = useStore.getState();
 console.log(state.count);
 
