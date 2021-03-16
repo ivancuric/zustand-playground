@@ -1,5 +1,5 @@
 import { State } from "zustand";
-// default export, ime je nebitno
+// default export
 import createVanilla from "zustand/vanilla";
 import createHook from "zustand";
 
@@ -15,7 +15,7 @@ const vanillaStore = createVanilla<AppState>((set) => ({
   reset: () => set({ count: 0 }),
 }));
 
-// naknadno stvorimo hook
+// create hook afterwards
 const useStore = createHook(vanillaStore);
 
 export const App = () => {
