@@ -3,7 +3,7 @@ import { combine } from "zustand/middleware";
 
 const useStore = create(
   /**
-   * combine dodaje type inferrence
+   * combine adds type inferrence
    */
   combine({ count: 0 }, (set) => ({
     add: (number: number) => set((state) => ({ count: state.count + number })),
