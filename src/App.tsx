@@ -2,6 +2,7 @@ import { State } from "zustand";
 // default export
 import createVanilla from "zustand/vanilla";
 import createHook from "zustand";
+import shallow from "zustand/shallow";
 
 interface AppState extends State {
   count: number;
@@ -34,7 +35,13 @@ const Counter = () => {
 };
 
 const Controls = () => {
-  const { add, reset } = useStore();
+  const { add, reset } = useStore(
+    (state) => ({
+      add: state.add,
+      reset: state.reset,
+    }),
+    shallow
+  );
 
   return (
     <div>
