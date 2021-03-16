@@ -2,30 +2,20 @@ import create, { State } from "zustand";
 
 interface AppState extends State {
   count: number;
-  add: (number: number) => void;
-  reset: () => void;
 }
 
-const useStore = create<AppState>((set) => ({
+const useStore = create<AppState>(() => ({
   count: 0,
-  add: (number) => set((state) => add(number, state)),
-  reset: () => set(reset()),
 }));
 
-// meh :\
-function add(number: number, state: AppState) {
-  return { count: state.count + number };
+// extractane "akcije"
+function add(number: number) {
+  useStore.setState((state) => ({ count: state.count + number }));
 }
 
 function reset() {
-  return { count: 0 };
+  useStore.setState({ count: 0 });
 }
-
-// Možemo doći do set i get metoda izvan hooka
-const state = useStore.getState();
-console.log(state.count);
-
-useStore.setState({ count: 5 });
 
 export const App = () => {
   return (
@@ -43,11 +33,10 @@ const Counter = () => {
 };
 
 const Controls = () => {
-  const { add } = useStore();
-
   return (
     <div>
       <button onClick={() => add(1)}>Add 1</button>
+      <button onClick={() => reset()}>Reset</button>
     </div>
   );
 };
