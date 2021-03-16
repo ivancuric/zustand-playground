@@ -8,10 +8,10 @@ const initialState: AppState = {
   count: 0,
 };
 
-// zlouporaba function hoistinga
+// abuse of  function hoisting
 const useStore = create(() => ({ ...initialState, add, reset }));
 
-// extractane "akcije"
+// extracted "actions"
 function add(number: number) {
   useStore.setState((state) => ({ count: state.count + number }));
 }
