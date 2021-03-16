@@ -1,12 +1,22 @@
-import create from "zustand";
-import { combine } from "zustand/middleware";
+import create, { State } from "zustand";
 
-const useStore = create(
-  combine({ count: 0 }, (set) => ({
-    add: (number: number) => set((state) => ({ count: state.count + number })),
-    reset: () => set({ count: 0 }),
-  }))
-);
+interface AppState extends State {
+  count: number;
+  add: (number: number) => void;
+  reset: () => void;
+}
+
+// type AppState = {
+//   count: number;
+//   add: (number: number) => void;
+//   reset: () => void;
+// };
+
+const useStore = create<AppState>((set) => ({
+  count: 0,
+  add: (number: number) => set((state) => ({ count: state.count + number })),
+  reset: () => set({ count: 0 }),
+}));
 
 export const App = () => {
   return (
