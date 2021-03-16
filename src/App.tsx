@@ -6,17 +6,18 @@ interface AppState extends State {
   reset: () => void;
 }
 
-// type AppState = {
-//   count: number;
-//   add: (number: number) => void;
-//   reset: () => void;
-// };
-
-const useStore = create<AppState>((set) => ({
+// postoji i get parametar koji je zamjena za previousState
+const useStore = create<AppState>((set, get) => ({
   count: 0,
-  add: (number) => set((state) => ({ count: state.count + number })),
+  add: (number) => set({ count: get().count + number }),
   reset: () => set({ count: 0 }),
 }));
+
+// Možemo doći do set i get metoda izvan hooka
+const state = useStore.getState();
+console.log(state.count);
+
+useStore.setState({ count: 5 });
 
 export const App = () => {
   return (
