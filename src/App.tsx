@@ -1,4 +1,7 @@
-import create, { State } from "zustand";
+import { State } from "zustand";
+// default export, ime je nebitno
+import createVanilla from "zustand/vanilla";
+import create from "zustand";
 
 interface AppState extends State {
   count: number;
@@ -6,17 +9,14 @@ interface AppState extends State {
   reset: () => void;
 }
 
-// type AppState = {
-//   count: number;
-//   add: (number: number) => void;
-//   reset: () => void;
-// };
-
-const useStore = create<AppState>((set) => ({
+const vanillaStore = createVanilla<AppState>((set) => ({
   count: 0,
   add: (number) => set((state) => ({ count: state.count + number })),
   reset: () => set({ count: 0 }),
 }));
+
+// naknadno stvorimo hook
+const useStore = create(vanillaStore);
 
 export const App = () => {
   return (
