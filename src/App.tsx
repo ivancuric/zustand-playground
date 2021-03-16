@@ -14,7 +14,7 @@ interface AppState extends State {
 
 const useStore = create<AppState>((set) => ({
   count: 0,
-  add: (number: number) => set((state) => ({ count: state.count + number })),
+  add: (number) => set((state) => ({ count: state.count + number })),
   reset: () => set({ count: 0 }),
 }));
 
