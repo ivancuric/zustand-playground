@@ -4,9 +4,12 @@ interface AppState extends State {
   count: number;
 }
 
-const useStore = create<AppState>(() => ({
+const initialState: AppState = {
   count: 0,
-}));
+};
+
+// zlouporaba function hoistinga
+const useStore = create(() => ({ ...initialState, add, reset }));
 
 // extractane "akcije"
 function add(number: number) {
@@ -33,10 +36,12 @@ const Counter = () => {
 };
 
 const Controls = () => {
+  const store = useStore();
+
   return (
     <div>
-      <button onClick={() => add(1)}>Add 1</button>
-      <button onClick={() => reset()}>Reset</button>
+      <button onClick={() => store.add(1)}>Add 1</button>
+      <button onClick={() => store.reset()}>Reset</button>
     </div>
   );
 };
