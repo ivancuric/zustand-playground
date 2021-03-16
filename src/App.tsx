@@ -6,14 +6,14 @@ interface AppState extends State {
   reset: () => void;
 }
 
-// postoji i get parametar koji je zamjena za previousState
+// `get` parameter returns the current state
 const useStore = create<AppState>((set, get) => ({
   count: 0,
   add: (number) => set({ count: get().count + number }),
   reset: () => set({ count: 0 }),
 }));
 
-// Možemo doći do set i get metoda izvan hooka
+// `set` and `get` outside of hooks
 const state = useStore.getState();
 console.log(state.count);
 
