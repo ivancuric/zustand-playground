@@ -4,19 +4,19 @@ interface AppState extends State {
   count: number;
 }
 
-const initialState: AppState = {
+export const initialState: AppState = {
   count: 0,
 };
 
 // abuse of  function hoisting
-const useStore = create(() => ({ ...initialState, add, reset }));
+export const useStore = create(() => ({ ...initialState, add, reset }));
 
 // extracted "actions"
-function add(number: number) {
+export function add(number: number) {
   useStore.setState((state) => ({ count: state.count + number }));
 }
 
-function reset() {
+export function reset() {
   useStore.setState({ count: 0 });
 }
 
@@ -29,13 +29,13 @@ export const App = () => {
   );
 };
 
-const Counter = () => {
+export const Counter = () => {
   const { count } = useStore();
 
   return <pre>{count}</pre>;
 };
 
-const Controls = () => {
+export const Controls = () => {
   const store = useStore();
 
   return (
