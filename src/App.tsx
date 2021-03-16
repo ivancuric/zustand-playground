@@ -3,7 +3,7 @@ import { combine } from "zustand/middleware";
 
 const useStore = create(
   /**
-   * Combine adds inferring
+   * combine dodaje type inferrence
    */
   combine({ count: 0 }, (set) => ({
     add: (number: number) => set((state) => ({ count: state.count + number })),
@@ -27,11 +27,12 @@ const Counter = () => {
 };
 
 const Controls = () => {
-  const { add } = useStore();
+  const { add, reset } = useStore();
 
   return (
     <div>
       <button onClick={() => add(1)}>Add 1</button>
+      <button onClick={() => reset()}>Reset</button>
     </div>
   );
 };
