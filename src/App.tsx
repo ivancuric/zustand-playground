@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import create from "zustand";
+import { combine } from "zustand/middleware";
 
-function App() {
+const useStore = create(
+  combine({ count: 0 }, (set) => ({
+    add: (number: number) => set((state) => ({ count: state.count + number })),
+    reset: () => set({ count: 0 }),
+  }))
+);
+
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Counter />
+      <Controls />
     </div>
   );
-}
+};
 
-export default App;
+const Counter = () => {
+  const { count } = useStore();
+
+  return <pre>{count}</pre>;
+};
+
+const Controls = () => {
+  const { add } = useStore();
+
+  return (
+    <div>
+      <button onClick={() => add(1)}>Add 1</button>
+    </div>
+  );
+};
