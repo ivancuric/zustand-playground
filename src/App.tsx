@@ -1,15 +1,15 @@
 import create, { SetState, State } from "zustand";
 
-interface AppState extends State {
+interface AppState {
   count: number;
 }
 
-interface Actions extends State {
+interface Actions {
   add: (number: number) => void;
   reset: () => void;
 }
 
-type Store = AppState & Actions;
+type Store = AppState & Actions & State;
 
 const initialState: AppState = {
   count: 0,
