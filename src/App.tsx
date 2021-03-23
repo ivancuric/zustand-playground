@@ -1,24 +1,30 @@
-import create, { State } from "zustand";
+import create, { SetState, State } from "zustand";
 
 interface AppState extends State {
   count: number;
 }
 
+interface Actions {
+  add: (number: number) => void;
+  reset: () => void;
+}
+
+type Store = AppState & Actions;
+
 const initialState: AppState = {
   count: 0,
 };
 
-// abuse of  function hoisting
-const useStore = create(() => ({ ...initialState, add, reset }));
+const createActions = (set: SetState<Store>) =>
+  ({
+    add: (number) => set((state) => ({ count: state.count + number })),
+    reset: () => set({ count: 0 }),
+  } as Actions);
 
-// extracted "actions"
-function add(number: number) {
-  useStore.setState((state) => ({ count: state.count + number }));
-}
-
-function reset() {
-  useStore.setState({ count: 0 });
-}
+const useStore = create<Store>((set) => ({
+  ...initialState,
+  ...createActions(set),
+}));
 
 export const App = () => {
   return (
