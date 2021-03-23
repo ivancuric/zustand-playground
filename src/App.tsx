@@ -1,6 +1,7 @@
+import { useEffect, useRef } from "react";
 import create, { SetState, State } from "zustand";
 
-interface AppState {
+interface AppState extends State {
   count: number;
 }
 
@@ -9,7 +10,7 @@ interface Actions {
   reset: () => void;
 }
 
-type Store = AppState & Actions & State;
+type Store = AppState & Actions;
 
 const initialState: AppState = {
   count: 0,
@@ -27,6 +28,16 @@ export const useStore = create<Store>((set) => ({
 }));
 
 export const App = () => {
+  const scratchRef = useRef(useStore.getState().scratches);
+
+  useEffect(() => {
+    function renderLoop() {
+      useStore.getState();
+      requestAnimationFrame(renderLoop);
+    }
+    renderLoop();
+  }, []);
+
   return (
     <div>
       <Counter />
