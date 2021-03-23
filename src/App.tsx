@@ -1,19 +1,21 @@
 import { useEffect, useRef } from "react";
-import create, { SetState, State } from "zustand";
+import create, { SetState } from "zustand";
 
-interface AppState extends State {
+type AppState = {
   count: number;
-}
+  transientCount: number;
+};
 
-interface Actions {
+type Actions = {
   add: (number: number) => void;
   reset: () => void;
-}
+};
 
 type Store = AppState & Actions;
 
 const initialState: AppState = {
   count: 0,
+  transientCount: 0,
 };
 
 const createActions = (set: SetState<Store>) =>
@@ -28,15 +30,17 @@ export const useStore = create<Store>((set) => ({
 }));
 
 export const App = () => {
-  const scratchRef = useRef(useStore.getState().scratches);
+  const transientCountRef = useRef(useStore.getState().transientCount);
 
-  useEffect(() => {
-    function renderLoop() {
-      useStore.getState();
-      requestAnimationFrame(renderLoop);
-    }
-    renderLoop();
-  }, []);
+  useEffect(
+    () =>
+      useStore.subscribe(
+        (transientCount: number) =>
+          (transientCountRef.current = transientCount),
+        (state) => state.transientCount
+      ),
+    []
+  );
 
   return (
     <div>
@@ -47,18 +51,19 @@ export const App = () => {
 };
 
 const Counter = () => {
-  const { count } = useStore();
+  const count = useStore().count;
 
   return <pre data-testid="count">{count}</pre>;
 };
 
 const Controls = () => {
-  const store = useStore();
+  const add = useStore().add;
+  const reset = useStore().reset;
 
   return (
     <div>
-      <button onClick={() => store.add(1)}>Add 1</button>
-      <button onClick={() => store.reset()}>Reset</button>
+      <button onClick={() => add(1)}>Add 1</button>
+      <button onClick={() => reset()}>Reset</button>
     </div>
   );
 };
