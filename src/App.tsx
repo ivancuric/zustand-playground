@@ -4,7 +4,7 @@ interface AppState extends State {
   count: number;
 }
 
-interface Actions {
+interface Actions extends State {
   add: (number: number) => void;
   reset: () => void;
 }
@@ -21,7 +21,7 @@ const createActions = (set: SetState<Store>) =>
     reset: () => set({ count: 0 }),
   } as Actions);
 
-const useStore = create<Store>((set) => ({
+export const useStore = create<Store>((set) => ({
   ...initialState,
   ...createActions(set),
 }));
@@ -38,7 +38,7 @@ export const App = () => {
 const Counter = () => {
   const { count } = useStore();
 
-  return <pre>{count}</pre>;
+  return <pre data-testid="count">{count}</pre>;
 };
 
 const Controls = () => {
