@@ -1,9 +1,8 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import create, { SetState } from "zustand";
 
 type AppState = {
   count: number;
-  transientCount: number;
 };
 
 type Actions = {
@@ -15,7 +14,6 @@ type Store = AppState & Actions;
 
 const initialState: AppState = {
   count: 0,
-  transientCount: 0,
 };
 
 const createActions = (set: SetState<Store>) =>
@@ -30,17 +28,11 @@ export const useStore = create<Store>((set) => ({
 }));
 
 export const App = () => {
-  const transientCountRef = useRef(useStore.getState().transientCount);
-
-  useEffect(
-    () =>
-      useStore.subscribe(
-        (transientCount: number) =>
-          (transientCountRef.current = transientCount),
-        (state) => state.transientCount
-      ),
-    []
-  );
+  // trigger `act` errors
+  const add = useStore((state) => state.add);
+  useEffect(() => {
+    add(0);
+  }, [add]);
 
   return (
     <div>
@@ -51,14 +43,18 @@ export const App = () => {
 };
 
 const Counter = () => {
-  const count = useStore().count;
+  const count = useStore((state) => state.count);
 
-  return <pre data-testid="count">{count}</pre>;
+  return (
+    <strong style={{ fontSize: "40px" }} data-testid="count">
+      {count}
+    </strong>
+  );
 };
 
 const Controls = () => {
-  const add = useStore().add;
-  const reset = useStore().reset;
+  const add = useStore((state) => state.add);
+  const reset = useStore((state) => state.reset);
 
   return (
     <div>
