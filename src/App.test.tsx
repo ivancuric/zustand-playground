@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { App, useStore } from "./App";
+import { act, renderHook } from "@testing-library/react-hooks";
 
 test("renders counter", () => {
   render(<App />);
@@ -49,4 +50,19 @@ describe("custom initial count", () => {
     userEvent.click(resetButton);
     expect(counter).toHaveTextContent("0");
   });
+});
+
+test("store works", () => {
+  const { result } = renderHook(() => useStore());
+
+  expect(result.current.count).toBe(0);
+});
+
+test("can increase store", () => {
+  const { result } = renderHook(() => useStore());
+  act(() => {
+    result.current.add(5);
+  });
+
+  expect(result.current.count).toBe(5);
 });
